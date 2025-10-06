@@ -31,6 +31,7 @@ export const validatePonto = (schema: z.ZodSchema) => {
   };
 };
 
+
 export const validateDepartamento = (schema: z.ZodSchema) => {
   return (req: Request, res: Response, next: NextFunction) => {
     try {

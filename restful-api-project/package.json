@@ -1,0 +1,33 @@
+{
+  "name": "restful-api-project",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "@prisma/client": "^6.16.3",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "swagger-ui-express": "^5.0.1",
+    "yamljs": "^0.3.0",
+    "zod": "^4.1.11"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.6.2",
+    "@types/swagger-ui-express": "^4.1.8",
+    "@types/yamljs": "^0.2.34",
+    "dotenv-cli": "^10.0.0",
+    "prisma": "^6.16.3",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.9.3"
+  },
+ "scripts": {
+  "dev": "node --loader ts-node/esm src/server.ts",
+  "start": "node dist/server.js",
+  "migrate": "dotenv -e .env -- npx prisma migrate dev --name init",
+  "seed": "dotenv -e .env -- npx ts-node prisma/seed.ts",
+  "generate": "npx prisma generate"
+}
+
+}
