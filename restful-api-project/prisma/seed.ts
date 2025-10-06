@@ -3,24 +3,19 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-    // Seed initial Departamento data
     const departamento1 = await prisma.departamento.create({
-        data: {
-            nome: 'Recursos Humanos',
-        },
+        data: { nome: 'Recursos Humanos' },
     });
 
     const departamento2 = await prisma.departamento.create({
-        data: {
-            nome: 'Desenvolvimento',
-        },
+        data: { nome: 'Desenvolvimento' },
     });
 
-    // Seed initial Usuario data
     const usuario1 = await prisma.usuario.create({
         data: {
             nome: 'Alice',
             email: 'alice@example.com',
+            senha: '123456',
             departamentoId: departamento1.id,
         },
     });
@@ -29,24 +24,22 @@ async function main() {
         data: {
             nome: 'Bob',
             email: 'bob@example.com',
+            senha: '123456',
             departamentoId: departamento2.id,
         },
     });
 
-    // Seed initial Ponto data
     await prisma.ponto.create({
         data: {
             usuarioId: usuario1.id,
-            entrada: new Date('2023-10-01T08:00:00Z'),
-            saida: new Date('2023-10-01T17:00:00Z'),
+            data: new Date('2023-10-01T08:00:00Z'),
         },
     });
 
     await prisma.ponto.create({
         data: {
             usuarioId: usuario2.id,
-            entrada: new Date('2023-10-01T09:00:00Z'),
-            saida: new Date('2023-10-01T18:00:00Z'),
+            data: new Date('2023-10-01T09:00:00Z'),
         },
     });
 }

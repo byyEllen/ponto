@@ -1,10 +1,13 @@
 import express from 'express';
 import swaggerUi from 'swagger-ui-express';
-import swaggerDocument from './docs/swagger.yaml';
+import YAML from 'yamljs';
+
 import usuarioRoutes from './routes/usuario.routes';
 import pontoRoutes from './routes/ponto.routes';
 import departamentoRoutes from './routes/departamento.routes';
-import { errorMiddleware } from './middlewares/error.middleware';
+import errorMiddleware from './middlewares/error.middleware';
+
+const swaggerDocument = YAML.load('./docs/swagger.yaml');
 
 const app = express();
 
