@@ -1,259 +1,371 @@
 openapi: 3.0.0
 info:
-  title: RESTful API
-  description: API for managing Usuarios, Pontos, and Departamentos
+  title: Ponto Eletrônico API
+  description: API para gerenciamento de Usuários, Pontos e Departamentos
   version: 1.0.0
 servers:
   - url: http://localhost:3000
 paths:
   /usuarios:
     get:
-      summary: Get all Usuarios
+      summary: Listar todos os usuários
+      tags: [Usuarios]
       responses:
         '200':
-          description: A list of Usuarios
+          description: Lista de usuários
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Usuario'
+              examples:
+                exemplo:
+                  value:
+                    - id: 1
+                      name: "Maria"
+                      email: "maria@email.com"
+                      pontos:
+                        - id: 10
+                          description: "Entrada"
+                          departamentoId: 2
     post:
-      summary: Create a new Usuario
+      summary: Criar novo usuário
+      tags: [Usuarios]
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/UsuarioCreate'
+            examples:
+              exemplo:
+                value:
+                  name: "João"
+                  email: "joao@email.com"
+                  departamentoId: 1
       responses:
         '201':
-          description: Usuario created
+          description: Usuário criado
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Usuario'
+        '400':
+          description: Dados inválidos
+        '500':
+          description: Erro interno
 
   /usuarios/{id}:
     get:
-      summary: Get a Usuario by ID
+      summary: Buscar usuário por ID
+      tags: [Usuarios]
       parameters:
         - name: id
           in: path
           required: true
           schema:
-            type: string
+            type: integer
       responses:
         '200':
-          description: A single Usuario
+          description: Usuário encontrado
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Usuario'
         '404':
-          description: Usuario not found
+          description: Usuário não encontrado
+        '500':
+          description: Erro interno
     put:
-      summary: Update a Usuario
+      summary: Atualizar usuário
+      tags: [Usuarios]
       parameters:
         - name: id
           in: path
           required: true
           schema:
-            type: string
+            type: integer
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/UsuarioUpdate'
+            examples:
+              exemplo:
+                value:
+                  name: "João Silva"
+                  email: "joaosilva@email.com"
+                  departamentoId: 2
       responses:
         '200':
-          description: Usuario updated
+          description: Usuário atualizado
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Usuario'
+        '400':
+          description: Dados inválidos
         '404':
-          description: Usuario not found
+          description: Usuário não encontrado
+        '500':
+          description: Erro interno
     delete:
-      summary: Delete a Usuario
+      summary: Remover usuário
+      tags: [Usuarios]
       parameters:
         - name: id
           in: path
           required: true
           schema:
-            type: string
+            type: integer
       responses:
         '204':
-          description: Usuario deleted
+          description: Usuário removido
         '404':
-          description: Usuario not found
+          description: Usuário não encontrado
+        '500':
+          description: Erro interno
 
   /pontos:
     get:
-      summary: Get all Pontos
+      summary: Listar todos os pontos
+      tags: [Pontos]
+      parameters:
+        - name: usuarioId
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: Filtrar pontos por usuário
       responses:
         '200':
-          description: A list of Pontos
+          description: Lista de pontos
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Ponto'
+              examples:
+                exemplo:
+                  value:
+                    - id: 10
+                      description: "Entrada"
+                      usuarioId: 1
+                      departamentoId: 2
     post:
-      summary: Create a new Ponto
+      summary: Criar novo ponto
+      tags: [Pontos]
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/PontoCreate'
+            examples:
+              exemplo:
+                value:
+                  description: "Saída"
+                  usuarioId: 1
+                  departamentoId: 2
       responses:
         '201':
-          description: Ponto created
+          description: Ponto criado
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Ponto'
+        '400':
+          description: Dados inválidos
+        '500':
+          description: Erro interno
 
   /pontos/{id}:
     get:
-      summary: Get a Ponto by ID
+      summary: Buscar ponto por ID
+      tags: [Pontos]
       parameters:
         - name: id
           in: path
           required: true
           schema:
-            type: string
+            type: integer
       responses:
         '200':
-          description: A single Ponto
+          description: Ponto encontrado
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Ponto'
         '404':
-          description: Ponto not found
+          description: Ponto não encontrado
+        '500':
+          description: Erro interno
     put:
-      summary: Update a Ponto
+      summary: Atualizar ponto
+      tags: [Pontos]
       parameters:
         - name: id
           in: path
           required: true
           schema:
-            type: string
+            type: integer
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/PontoUpdate'
+            examples:
+              exemplo:
+                value:
+                  description: "Intervalo"
+                  usuarioId: 1
+                  departamentoId: 2
       responses:
         '200':
-          description: Ponto updated
+          description: Ponto atualizado
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Ponto'
+        '400':
+          description: Dados inválidos
         '404':
-          description: Ponto not found
+          description: Ponto não encontrado
+        '500':
+          description: Erro interno
     delete:
-      summary: Delete a Ponto
+      summary: Remover ponto
+      tags: [Pontos]
       parameters:
         - name: id
           in: path
           required: true
           schema:
-            type: string
+            type: integer
       responses:
         '204':
-          description: Ponto deleted
+          description: Ponto removido
         '404':
-          description: Ponto not found
+          description: Ponto não encontrado
+        '500':
+          description: Erro interno
 
   /departamentos:
     get:
-      summary: Get all Departamentos
+      summary: Listar todos os departamentos
+      tags: [Departamentos]
       responses:
         '200':
-          description: A list of Departamentos
+          description: Lista de departamentos
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Departamento'
+              examples:
+                exemplo:
+                  value:
+                    - id: 2
+                      name: "RH"
     post:
-      summary: Create a new Departamento
+      summary: Criar novo departamento
+      tags: [Departamentos]
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/DepartamentoCreate'
+            examples:
+              exemplo:
+                value:
+                  name: "Financeiro"
       responses:
         '201':
-          description: Departamento created
+          description: Departamento criado
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Departamento'
+        '400':
+          description: Dados inválidos
+        '500':
+          description: Erro interno
 
   /departamentos/{id}:
     get:
-      summary: Get a Departamento by ID
+      summary: Buscar departamento por ID
+      tags: [Departamentos]
       parameters:
         - name: id
           in: path
           required: true
           schema:
-            type: string
+            type: integer
       responses:
         '200':
-          description: A single Departamento
+          description: Departamento encontrado
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Departamento'
         '404':
-          description: Departamento not found
+          description: Departamento não encontrado
+        '500':
+          description: Erro interno
     put:
-      summary: Update a Departamento
+      summary: Atualizar departamento
+      tags: [Departamentos]
       parameters:
         - name: id
           in: path
           required: true
           schema:
-            type: string
+            type: integer
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/DepartamentoUpdate'
+            examples:
+              exemplo:
+                value:
+                  name: "TI"
       responses:
         '200':
-          description: Departamento updated
+          description: Departamento atualizado
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Departamento'
+        '400':
+          description: Dados inválidos
         '404':
-          description: Departamento not found
+          description: Departamento não encontrado
+        '500':
+          description: Erro interno
     delete:
-      summary: Delete a Departamento
+      summary: Remover departamento
+      tags: [Departamentos]
       parameters:
         - name: id
           in: path
           required: true
           schema:
-            type: string
+            type: integer
       responses:
         '204':
-          description: Departamento deleted
+          description: Departamento removido
         '404':
-          description: Departamento not found
+          description: Departamento não encontrado
+        '500':
+          description: Erro interno
 
 components:
   schemas:
@@ -261,18 +373,30 @@ components:
       type: object
       properties:
         id:
-          type: string
+          type: integer
         name:
           type: string
         email:
           type: string
+        departamentoId:
+          type: integer
+        pontos:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ponto'
     UsuarioCreate:
       type: object
+      required:
+        - name
+        - email
+        - departamentoId
       properties:
         name:
           type: string
         email:
           type: string
+        departamentoId:
+          type: integer
     UsuarioUpdate:
       type: object
       properties:
@@ -280,32 +404,54 @@ components:
           type: string
         email:
           type: string
+        departamentoId:
+          type: integer
     Ponto:
       type: object
       properties:
         id:
-          type: string
+          type: integer
         description:
           type: string
+        usuarioId:
+          type: integer
+        departamentoId:
+          type: integer
+        departamento:
+          $ref: '#/components/schemas/Departamento'
     PontoCreate:
       type: object
+      required:
+        - description
+        - usuarioId
+        - departamentoId
       properties:
         description:
           type: string
+        usuarioId:
+          type: integer
+        departamentoId:
+          type: integer
     PontoUpdate:
       type: object
       properties:
         description:
           type: string
+        usuarioId:
+          type: integer
+        departamentoId:
+          type: integer
     Departamento:
       type: object
       properties:
         id:
-          type: string
+          type: integer
         name:
           type: string
     DepartamentoCreate:
       type: object
+      required:
+        - name
       properties:
         name:
           type: string
@@ -314,3 +460,10 @@ components:
       properties:
         name:
           type: string
+tags:
+  - name: Usuarios
+    description: Operações relacionadas aos usuários
+  - name: Pontos
+    description: Operações relacionadas aos pontos eletrônicos
+  - name: Departamentos
+    description: Operações relacionadas aos departamentos

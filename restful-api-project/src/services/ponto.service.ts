@@ -8,12 +8,15 @@ export class PontoService {
     }
 
     async getAllPontos(): Promise<Ponto[]> {
-        return await this.prisma.ponto.findMany();
+        return await this.prisma.ponto.findMany({
+            include: { usuario: true }, 
+        });
     }
 
     async getPontoById(id: number): Promise<Ponto | null> {
         return await this.prisma.ponto.findUnique({
             where: { id },
+            include: { usuario: true }, 
         });
     }
 
